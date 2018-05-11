@@ -22,29 +22,44 @@ class App extends React.Component {
       fishes: fishes
     })
    };
+  loadSampleFishes = () => {
+    this.setState({
+      fishes: sampleFishes
+    })
+  };
 
-   loadSampleFishes = () => {
-     this.setState({
-        fishes: sampleFishes
-     })
-   };
+  addToOrder = (key) => {
+    // 1. Take a copy of statusRef
+    const order = { ...this.state.order };
+    // 2. Either add to the order, or update the number in our Order
+    order[key] = order[key] + 1 || 1;
+    // 3. Call setState to update our state Object
+    this.setState({ order });
+  }
+
   render(){
     return (
       <div className="catch-of-the-day">
         <div className="menu">
           <Header tagline="Fresh Seafood Market"/>
           <ul className="fishes">
-            {Object.keys(this.state.fishes).map(key => <Fish key={key} fish={this.state.fishes[key]}/>)}
-          </ul>
+            {Object.keys(this.state.fishes).map(key => (
+              <Fish
+                key={key}
+                index={key}
+                fish={this.state.fishes[key]}
+                addToOrder={this.addToOrder} />
+              ))}
+            </ul>
+          </div>
+          <Order fishes={this.state.fishes} order={this.state.order}/>
+          <Inventory
+            addFish={this.addFish}
+            loadSampleFishes={this.loadSampleFishes}
+          />
         </div>
-        <Order/>
-        <Inventory
-          addFish={this.addFish}
-          loadSampleFishes={this.loadSampleFishes}
-        />
-      </div>
-    )
+      )
+    }
   }
-}
 
 export default App;
