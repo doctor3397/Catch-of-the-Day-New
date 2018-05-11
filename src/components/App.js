@@ -21,7 +21,8 @@ class App extends React.Component {
     this.setState({
       fishes: fishes
     })
-   };
+  };
+
   loadSampleFishes = () => {
     this.setState({
       fishes: sampleFishes
@@ -29,7 +30,7 @@ class App extends React.Component {
   };
 
   addToOrder = (key) => {
-    // 1. Take a copy of statusRef
+    // 1. Take a copy of the order state
     const order = { ...this.state.order };
     // 2. Either add to the order, or update the number in our Order
     order[key] = order[key] + 1 || 1;
@@ -48,18 +49,18 @@ class App extends React.Component {
                 key={key}
                 index={key}
                 fish={this.state.fishes[key]}
-                addToOrder={this.addToOrder} />
-              ))}
-            </ul>
-          </div>
-          <Order fishes={this.state.fishes} order={this.state.order}/>
-          <Inventory
-            addFish={this.addFish}
-            loadSampleFishes={this.loadSampleFishes}
-          />
+                addToOrder={this.addToOrder}/>
+            ))}
+          </ul>
         </div>
-      )
-    }
+        <Order fishes={this.state.fishes} order={this.state.order}/>
+        <Inventory
+          addFish={this.addFish}
+          loadSampleFishes={this.loadSampleFishes}
+        />
+      </div>
+    )
   }
+}
 
 export default App;
