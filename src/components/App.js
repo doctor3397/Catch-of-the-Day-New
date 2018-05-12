@@ -36,7 +36,7 @@ class App extends React.Component {
 
   addFish = (fish) => {
     // console.log(fish);
-    // 1. Take a copy of the existing status
+    // 1. Take a copy of the existing state
     const fishes = { ...this.state.fishes };
     // 2. Add our new fish to that fishes variable
     fishes[`fish${Date.now()}`] = fish;
@@ -47,11 +47,20 @@ class App extends React.Component {
   };
 
   updateFish = (key, updatedFish) => {
-    // 1. Take a copy of the current statusRef
+    // 1. Take a copy of the current state
     const fishes = { ...this.state.fishes };
     // 2. Update that state
     fishes[key] = updatedFish;
     // 3. Set that to the fishes state
+    this.setState({ fishes });
+  }
+
+  deleteFish = (key) => {
+    // 1. Take a copy of the state
+    const fishes = { ...this.state.fishes };
+    // 2. Remove that fish from the fishes
+    fishes[key] = null;
+    // 3. Update fishes state
     this.setState({ fishes });
   }
 
@@ -66,6 +75,15 @@ class App extends React.Component {
     const order = { ...this.state.order };
     // 2. Either add to the order, or update the number in our Order
     order[key] = order[key] + 1 || 1;
+    // 3. Call setState to update our state Object
+    this.setState({ order });
+  }
+
+  removeFromOrder = (key) => {
+    // 1. Take a copy of the order state
+    const order = { ...this.state.order };
+    // 2. Remove that item from order
+    delete order[key];
     // 3. Call setState to update our state Object
     this.setState({ order });
   }
@@ -85,10 +103,15 @@ class App extends React.Component {
             ))}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order}/>
+        <Order
+          fishes={this.state.fishes}
+          order={this.state.order}
+          removeFromOrder={this.removeFromOrder}
+        />
         <Inventory
           addFish={this.addFish}
           updateFish={this.updateFish}
+          deleteFish={this.deleteFish}
           loadSampleFishes={this.loadSampleFishes}
           fishes={this.state.fishes}
         />
